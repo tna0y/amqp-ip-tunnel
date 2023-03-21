@@ -8,16 +8,14 @@ import (
 	"github.com/tna0y/amqp-ip-tunnel/tunnel"
 )
 
-func mains() {
-
-	net.ParseIP("")
-
+func main() {
 	config := tunnel.AMQPIPTunnelConfig{
-		ExchangeName:     opts.exchangeName,
-		ConnectionURI:    opts.amqpURI,
-		InterfaceIPNet:   &net.IPNet{IP: net.ParseIP("10.1.0.1"), Mask: net.CIDRMask(24, 32)},
-		TUNInterfaceName: opts.tunName,
-		DebugPackets:     opts.debug,
+		ConnectionURI: "amqp://guest:guest@RABBITMQ_HOST:5672/",
+		DebugPackets:  true,
+		InterfaceIPNet: &net.IPNet{
+			IP:   net.ParseIP("10.1.0.1"),
+			Mask: net.CIDRMask(24, 32),
+		},
 	}
 
 	tun, err := tunnel.NewAMQPIPTunnel(config)
@@ -35,5 +33,4 @@ func mains() {
 	if err != nil {
 		log.Fatalln("exited: ", err.Error())
 	}
-
 }
