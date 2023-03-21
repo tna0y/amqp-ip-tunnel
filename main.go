@@ -87,6 +87,13 @@ func main() {
 		log.Fatalf("failed to setup AMQP Tunnel: %s", err.Error())
 	}
 
+	for _, network := range recvNets {
+		err = tun.AddRoute(network)
+		if err != nil {
+			log.Fatalf("failed to add route: %s", err.Error())
+		}
+	}
+
 	err = tun.Run(ctx)
 
 	if err != nil {
